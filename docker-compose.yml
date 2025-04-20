@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=2197
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    environment:
+      - DATABASE_URL='postgresql://postgres:2197@db:5432/test'
+    depends_on:
+      - db
+    ports:
+      - "8997:8000"
+
+volumes:
+  db-data:
